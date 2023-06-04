@@ -1,0 +1,26 @@
+.hero-section {
+    background-image: url('../img/hero-image.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.custom-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.custom-list li {
+    position: relative;
+}
+
+.custom-list li::before {
+    content: ">";
+    position: absolute;
+    left: -1.25em;
+}

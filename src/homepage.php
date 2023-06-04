@@ -3,10 +3,10 @@ session_start();
 
 if (!isset($_SESSION["user_id"])) {
   if (headers_sent()) {
-    echo '<script>window.location.href = "../index.php";</script>';
+    echo '<script>window.location.href = "index.php";</script>';
     exit();
   } else {
-    header("Location: ../index.php");
+    header("Location: index.php");
     exit();
   }
 }
@@ -34,45 +34,53 @@ $serverIP = $serverData[0]['adress'];
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage - <?php echo $servername ?></title>
-    <!-- <script src="https://cdn.tailwindcss.com/2.2.19/tailwind.min.css"></script> -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.7/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #111827;
+            color: #F9FAFB;
+        }
+    </style>
 </head>
-<body class="overflow-hidden">
-    <div class="flex min-h-screen">
-        <div class="w-1/6 bg-gray-800 text-white py-4 px-8">
-            <span>Welcome <?php echo $user; ?></span>
-            <ul class="mt-4">
-                <li class="mb-2"><a href="#" class="text-blue-500">Home</a></li>
-                <li class="mb-2"><a href="cli.php" class="text-blue-500">Console</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500">FTP connection</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500">File browser</a></li>
-                <li><a href="#" class="text-blue-500">Link</a></li>
-                <li><a href="logout.php" class="text-blue-500">Logout</a></li>
-            </ul>
+<body>
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-1/6 bg-gray-800 text-white flex flex-col items-start justify-between py-8">
+        <div>
+            <h1 style="padding-left: 10px;" class="text-2xl font-bold mb-4"><a href="#" class="text-blue-500">Welcome <?php echo $user; ?>!</a></h1>
+            <nav class="flex flex-col space-y-4">
+                <a style="padding-left: 10px;" href="#" class="nav-link">Home</a>
+                <a style="padding-left: 10px;" href="cli.php" class="nav-link">Console</a>
+                <a style="padding-left: 10px;" href="#" class="nav-link">FTP connection</a>
+                <a style="padding-left: 10px;" href="#" class="nav-link">File browser</a>
+            </nav>
         </div>
+        <div>
+            <a style="padding-left: 10px;" href="logout.php" class="nav-link">Logout</a>
+        </div>
+    </aside>
 
-        <div class="flex-1 bg-gray-100 p-8">
-            <div class="bg-white rounded-lg p-4 flex flex-col space-y-4 max-w-md mx-auto">
-                <h2 class="text-lg font-semibold">Server status for: <?php echo $serverIP; ?></h2>
-                <div class="flex items-center space-x-4">
-                    <div>
-                        <p class="text-gray-600">Current Players:</p>
-                        <p id="currentPlayers" class="text-2xl font-semibold"></p>
-                    </div>
-                    <div>
-                        <p class="text-gray-600">Max Players:</p>
-                        <p id="maxPlayers" class="text-2xl font-semibold"></p>
-                    </div>
-                </div>
-                <div class="flex justify-center space-x-2">
-                    <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">Start</button>
-                    <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Stop</button>
-                    <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">Restart</button>
-                </div>
-            </div>
+        <!-- Main Content -->
+    <main class="flex-1 bg-gray-900 py-8 px-16">
+      <div class="max-w-lg mx-auto">
+        <h2 class="text-3xl font-semibold mb-8">Server status for: <?php echo $serverIP; ?></h2>
+        <div class="bg-gray-800 p-6 rounded-lg flex justify-between">
+          <div class="text-white">
+            <p class="text-gray-400">Current Players:</p>
+            <p id="currentPlayers" class="text-2xl font-semibold"></p>
+          </div>
+          <div class="text-white">
+            <p class="text-gray-400">Max Players:</p>
+            <p id="maxPlayers" class="text-2xl font-semibold"></p>
+          </div>
         </div>
-    </div>
+        <div class="flex justify-center space-x-4 mt-8">
+          <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Start</button>
+          <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Stop</button>
+        </div>
+      </div>
+    </main>
+  </div>
 </body>
 <script>
   const serverIP = '<?php echo $serverIP; ?>';

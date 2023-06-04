@@ -3,8 +3,13 @@ session_start();
 
 // Redirect to dashboard if the user is already logged in
 if(isset($_SESSION['user_id'])) {
-    header('Location: ./src/cli.php');
-    exit;
+  if (headers_sent()) {
+      echo '<script>window.location.href = "homepage.php";</script>';
+      exit();
+  } else {
+      header("Location: homepage.php");
+      exit();
+  }
 }
 
 // Process login form
@@ -19,7 +24,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
     } else {
         try {
             // Connect to database
-            require 'src/assets/script/db_connect.php';
+            require 'assets/script/db_connect.php';
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Check if user exists and verify password
@@ -36,7 +41,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['user_type'] = $user['role'];
-                header('Location: src/cli.php');
+                header('Location: homepage.php');
                 exit;
             } else {
                 // Invalid credentials

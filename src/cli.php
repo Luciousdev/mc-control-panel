@@ -3,13 +3,13 @@ session_start();
 
 if (!isset($_SESSION["user_id"])) {
     if (headers_sent()) {
-      echo '<script>window.location.href = "../index.php";</script>';
-      exit();
+        echo '<script>window.location.href = "../index.php";</script>';
+        exit();
     } else {
-      header("Location: ../index.php");
-      exit();
+        header("Location: ../index.php");
+        exit();
     }
-  }
+}
 
 require 'assets/script/sql.php';
 require 'assets/script/db_connect.php';
@@ -29,26 +29,30 @@ $servername = $serverData[0]['servername'];
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Console - <?php echo $servername ?></title>
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"> -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="">
     <div class="flex h-screen">
-        <div class="w-1/6 bg-gray-800 text-white py-4 px-8">
-            <span>Welcome <?php echo $user; ?></span>
-            <ul class="mt-4">
-                <li class="mb-2"><a href="homepage.php" class="text-blue-500">Home</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500">Console</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500">FTP connection</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500">File browser</a></li>
-                <li><a href="#" class="text-blue-500">Link</a></li>
-                <li><a href="logout.php" class="text-blue-500">Logout</a></li>
-            </ul>
-        </div>
+        <!-- Sidebar -->
+        <aside class="w-1/6 bg-gray-800 text-white flex flex-col items-start justify-between py-8">
+            <div>
+                <h1 style="padding-left: 10px;" class="text-2xl font-bold mb-4"><a href="#" class="text-blue-500">Welcome <?php echo $user; ?>!</a></h1>
+                <nav class="flex flex-col space-y-4">
+                    <a style="padding-left: 10px;" href="homepage.php" class="nav-link">Home</a>
+                    <a style="padding-left: 10px;" href="#" class="nav-link">Console</a>
+                    <a style="padding-left: 10px;" href="#" class="nav-link">FTP connection</a>
+                    <a style="padding-left: 10px;" href="#" class="nav-link">File browser</a>
+                </nav>
+            </div>
+            <div>
+                <a style="padding-left: 10px;" href="logout.php" class="nav-link">Logout</a>
+            </div>
+        </aside>
 
-        <div class="flex-1 bg-gray-100">
-            <div class="px-8 py-4">
-                <div id="console" class="h-5/6 bg-black p-4 overflow-y-auto"></div>
+        <!-- Main content -->
+        <div class="flex-1 bg-gray-700">
+            <div class="px-8 py-4 flex flex-col h-screen">
+                <div id="console" class="flex-1 bg-black p-4 overflow-y-auto"></div>
                 <form id="command-form" class="mt-4 flex" action="assets/script/db_connect.php" method="POST">
                     <input id="command-input" type="text" name="command" class="flex-1 border border-gray-300 p-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </form>
@@ -82,7 +86,6 @@ $servername = $serverData[0]['servername'];
             };
             return colorMap[code] || '#FFFFFF';  // Default to White if code is not found
         }
-
 
         commandForm.addEventListener('submit', (event) => {
             event.preventDefault();
@@ -125,7 +128,6 @@ $servername = $serverData[0]['servername'];
 
             consoleElement.scrollTop = consoleElement.scrollHeight; 
         }
-
     </script>
 </body>
 </html>
