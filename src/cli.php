@@ -1,9 +1,25 @@
 <?php
 session_start();
 
+if (!isset($_SESSION["user_id"])) {
+    if (headers_sent()) {
+      echo '<script>window.location.href = "../index.php";</script>';
+      exit();
+    } else {
+      header("Location: ../index.php");
+      exit();
+    }
+  }
+
+require 'assets/script/sql.php';
 require 'assets/script/db_connect.php';
 $user = $_SESSION['username'];
-$servername = "Luciousdev"
+$userid = $_SESSION['user_id'];
+$serverData = getMcServer($userid);
+$_SESSION['serverdata'] = $serverData;
+$servername = $serverData[0]['servername'];
+
+
 ?>
 
 <!DOCTYPE html>
@@ -13,24 +29,26 @@ $servername = "Luciousdev"
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Console - <?php echo $servername ?></title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="overflow-hidden">
+<body class="">
     <div class="flex h-screen">
         <div class="w-1/6 bg-gray-800 text-white py-4 px-8">
             <span>Welcome <?php echo $user; ?></span>
             <ul class="mt-4">
-                <li class="mb-2"><a href="#" class="text-blue-500">Home</a></li>
+                <li class="mb-2"><a href="homepage.php" class="text-blue-500">Home</a></li>
                 <li class="mb-2"><a href="#" class="text-blue-500">Console</a></li>
                 <li class="mb-2"><a href="#" class="text-blue-500">FTP connection</a></li>
                 <li class="mb-2"><a href="#" class="text-blue-500">File browser</a></li>
                 <li><a href="#" class="text-blue-500">Link</a></li>
+                <li><a href="logout.php" class="text-blue-500">Logout</a></li>
             </ul>
         </div>
 
         <div class="flex-1 bg-gray-100">
             <div class="px-8 py-4">
-                <div id="console" class="h-5/6 bg-black p-4 overflow-auto"></div>
+                <div id="console" class="h-5/6 bg-black p-4 overflow-y-auto"></div>
                 <form id="command-form" class="mt-4 flex" action="assets/script/db_connect.php" method="POST">
                     <input id="command-input" type="text" name="command" class="flex-1 border border-gray-300 p-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </form>
@@ -62,7 +80,6 @@ $servername = "Luciousdev"
                 e: '#FFFF55',  // Yellow
                 f: '#FFFFFF'   // White
             };
-
             return colorMap[code] || '#FFFFFF';  // Default to White if code is not found
         }
 
@@ -85,29 +102,29 @@ $servername = "Luciousdev"
 
         function appendToConsole(content) {
             const lineBreak = document.createElement('br');
-            const span = document.createElement('span');
+            const lines = content.split('\n');
 
-            // Remove color codes from the content
-            const strippedContent = content.replace(/§[0-9a-f]/g, '');
+            lines.forEach(line => {
+                const span = document.createElement('span');
+                const strippedContent = line.replace(/§[0-9a-f]/g, '');
 
-            span.innerHTML = strippedContent;
+                span.innerHTML = strippedContent;
 
-            // Extract color codes from the content
-            const colorCodes = content.match(/§[0-9a-f]/g) || [];
+                // Extract color codes from the line
+                const colorCodes = line.match(/§[0-9a-f]/g) || [];
 
-            // Apply color codes as inline styles
-            colorCodes.forEach(colorCode => {
-                const color = colorCode.replace('§', '');
-                span.style.color = getColorFromCode(color);
+                // Apply color codes as inline styles
+                colorCodes.forEach(colorCode => {
+                    const color = colorCode.replace('§', '');
+                    span.style.color = getColorFromCode(color);
+                });
+
+                consoleElement.appendChild(span);
+                consoleElement.appendChild(lineBreak.cloneNode()); 
             });
 
-            consoleElement.appendChild(span);
-            consoleElement.appendChild(lineBreak);
-            consoleElement.scrollTop = consoleElement.scrollHeight; // Auto scroll to bottom
+            consoleElement.scrollTop = consoleElement.scrollHeight; 
         }
-
-
-
 
     </script>
 </body>

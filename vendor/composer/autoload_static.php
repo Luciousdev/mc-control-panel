@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInitd95ff9b0afb1770d203402a6d9ce8006
 {
     public static $prefixLengthsPsr4 = array (
+        'x' => 
+        array (
+            'xPaw\\' => 5,
+        ),
         'T' => 
         array (
             'Thedudeguy\\' => 11,
@@ -14,6 +18,10 @@ class ComposerStaticInitd95ff9b0afb1770d203402a6d9ce8006
     );
 
     public static $prefixDirsPsr4 = array (
+        'xPaw\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/xpaw/php-minecraft-query/src',
+        ),
         'Thedudeguy\\' => 
         array (
             0 => __DIR__ . '/..' . '/thedudeguy/rcon/src',

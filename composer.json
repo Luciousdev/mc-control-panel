@@ -1,5 +1,6 @@
 {
     "require": {
-        "thedudeguy/rcon": "^1.0"
+        "thedudeguy/rcon": "^1.0",
+        "xpaw/php-minecraft-query": "^4.0"
     }
 }

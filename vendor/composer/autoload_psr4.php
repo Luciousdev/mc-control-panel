@@ -6,5 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'xPaw\\' => array($vendorDir . '/xpaw/php-minecraft-query/src'),
     'Thedudeguy\\' => array($vendorDir . '/thedudeguy/rcon/src'),
 );
