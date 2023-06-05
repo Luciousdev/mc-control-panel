@@ -60,29 +60,49 @@ $serverIP = $serverData[0]['adress'];
         </div>
     </aside>
 
-        <!-- Main Content -->
+    <!-- Main Content -->
     <main class="flex-1 bg-gray-900 py-8 px-16">
       <div class="max-w-lg mx-auto">
-        <h2 class="text-3xl font-semibold mb-8">Server status for: <?php echo $serverIP; ?></h2>
+        <h2 class="text-3xl font-semibold mb-8">Server status for: <?php echo $serverIP.":".$serverPort; ?></h2>
         <div class="bg-gray-800 p-6 rounded-lg flex justify-between">
           <div class="text-white">
-            <p class="text-gray-400">Current Players:</p>
-            <p id="currentPlayers" class="text-2xl font-semibold"></p>
+            <p class="text-gray-400">Server IP:</p>
+            <p id="" class="text-xl font-semibold"><?php echo $serverIP.":".$serverPort; ?></p>
           </div>
           <div class="text-white">
-            <p class="text-gray-400">Max Players:</p>
-            <p id="maxPlayers" class="text-2xl font-semibold"></p>
+            <p class="text-gray-400">Players:</p>
+            <p id="currentPlayers" class="text-2xl font-semibold"></p>
           </div>
         </div>
         <div class="flex justify-center space-x-4 mt-8">
-          <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Start</button>
-          <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Stop</button>
+          <button id="start" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Start</button>
+          <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded" onclick="stopServer()">Stop</button>
         </div>
       </div>
     </main>
   </div>
 </body>
 <script>
+    function stopServer() {
+    var xhttp = new XMLHttpRequest();
+
+    var url = "assets/script/stop-command.php";
+
+    xhttp.open("POST", url, true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
+      }
+    };
+
+    // Send the request
+    xhttp.send();
+  }
+
+
+
   const serverIP = '<?php echo $serverIP; ?>';
   const serverPort = <?php echo $serverPort; ?>;
 
@@ -93,20 +113,25 @@ $serverIP = $serverData[0]['adress'];
       .then(response => response.json())
       .then(data => {
         if (data.online) {
-          document.getElementById('currentPlayers').innerText = data.players.online;
-          document.getElementById('maxPlayers').innerText = data.players.max;
+          document.getElementById('currentPlayers').innerText = data.players.online+"/"+data.players.max;
         } else {
           document.getElementById('currentPlayers').innerText = 'N/A';
-          document.getElementById('maxPlayers').innerText = 'N/A';
         }
       })
       .catch(error => {
         console.error('Error:', error);
         document.getElementById('currentPlayers').innerText = 'N/A';
-        document.getElementById('maxPlayers').innerText = 'N/A';
       });
   }
 
   document.addEventListener('DOMContentLoaded', updatePlayerCounts);
+
+
+  document.getElementById("start").addEventListener("click", function() {
+    // Send a request to the server with the variable value
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://192.168.2.176:3000/run-script/" + serverIP, true);
+    xhr.send();
+  });
 </script>
 </html>

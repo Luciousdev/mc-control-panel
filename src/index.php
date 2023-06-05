@@ -41,8 +41,13 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['user_type'] = $user['role'];
-                header('Location: homepage.php');
-                exit;
+                if (headers_sent()) {
+                    echo '<script>window.location.href = "homepage.php";</script>';
+                    exit();
+                } else {
+                    header("Location: homepage.php");
+                    exit();
+                }
             } else {
                 // Invalid credentials
                 // $error = "Incorrect username or password";

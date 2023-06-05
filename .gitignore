@@ -3,3 +3,4 @@ sql.php
 rcon.php
 execute-command.php
 node_modules/
+stop-command.php

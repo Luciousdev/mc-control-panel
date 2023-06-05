@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a class="text-xl font-bold" href="#">Sign up</a>
         <ul class="flex">
             <li>
-                <a class="text-white" href="../index.php">Log in</a>
+                <a class="text-white" href="index.php">Log in</a>
             </li>
         </ul>
     </div>
