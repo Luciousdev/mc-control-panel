@@ -130,7 +130,7 @@ $serverIP = $serverData[0]['adress'];
   document.getElementById("start").addEventListener("click", function() {
     // Send a request to the server with the variable value
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://192.168.2.176:3000/run-script/" + serverIP, true);
+    xhr.open("GET", "https://mcproxy.luciousdev.nl/run-script/" + serverIP, true);
     xhr.send();
   });
 </script>
