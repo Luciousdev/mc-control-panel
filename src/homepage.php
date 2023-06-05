@@ -132,6 +132,7 @@ $serverIP = $serverData[0]['adress'];
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "https://mcproxy.luciousdev.nl/run-script/" + serverIP, true);
     xhr.send();
+    alert("Server is starting!");
   });
 </script>
 </html>
